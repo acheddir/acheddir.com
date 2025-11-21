@@ -73,7 +73,7 @@ export function useAlgoliaSearch(query: string, locale: string) {
           ],
         });
 
-        const hits = (searchResults[0].hits as SearchHit[]) || [];
+        const hits = ('hits' in searchResults[0] ? (searchResults[0].hits as SearchHit[]) : []) || [];
 
         // Extract unique tags from results
         const allTags = hits.flatMap((hit) => hit.tags || []);

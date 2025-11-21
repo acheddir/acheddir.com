@@ -33,7 +33,7 @@ interface Post {
   };
 }
 
-interface AlgoliaRecord {
+interface AlgoliaRecord extends Record<string, unknown> {
   objectID: string;
   slug: string;
   title: string;

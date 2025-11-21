@@ -86,7 +86,7 @@ export function useAlgoliaSearch(locale?: string): UseAlgoliaSearchResult {
           ],
         });
 
-        const hits = searchResults[0].hits as SearchResult[];
+        const hits = ('hits' in searchResults[0] ? searchResults[0].hits : []) as SearchResult[];
         setResults(hits);
       } catch (err) {
         console.error('Algolia search error:', err);
