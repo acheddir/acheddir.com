@@ -1,0 +1,46 @@
+{
+  "metadata": {
+    "title": "مدونة {{name}}"
+  },
+  "author": {
+    "name": "عبد الرحمٰن شدير",
+    "jobTitle": "مطور و مهندس برمجيات"
+  },
+  "navbar": {
+    "content": "محتوى",
+    "blog": "مدونة",
+    "posts": "مقالات",
+    "tags": "وسوم",
+    "categories": "فئات",
+    "archives": "أرشيف",
+    "newsletter": "رسائل إخبارية",
+    "videos": "فيديوهات",
+    "projects": "مشاريع",
+    "uses": "باش كانخدم",
+    "now": "دابا",
+    "search": "قلّْب...",
+    "command": {
+      "placeholder": "كتب شي أمر ولا قلّْب...",
+      "social": "الشبكات الاجتماعية",
+      "theme": "المظهر",
+      "light": "ناصع",
+      "dark": "داكن",
+      "system": "ديال النظام",
+      "navigate": "تنقل",
+      "select": "اختر",
+      "close": "سد",
+      "clear": "امسح",
+      "noResults": "ما لقينا والو.",
+      "poweredBy": "مشغل بـ"
+    }
+  },
+  "archives": {
+    "description": "شوف جميع المقالات منظمة حسب التاريخ"
+  },
+  "categories": {
+    "title": "فئات",
+    "description": "شوف المقالات منظمة حسب الفئات",
+    "noPosts": "ما كاينش مقالات فهاد الفئة",
+    "other": "أخرى"
+  }
+}

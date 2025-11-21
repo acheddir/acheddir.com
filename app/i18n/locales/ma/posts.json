@@ -1,0 +1,15 @@
+{
+  "posts": {
+    "latest": "التدوينات"
+  },
+  "post": {
+    "blog": "مدونة",
+    "toc": "فهرس المحتويات",
+    "minutes_one": "دقيقة ديال القراية",
+    "minutes_other": "{{count}} دقايق ديال القراية",
+    "publishedon": "تم النشر في {{date}}",
+    "updatedon": "تم التحديث في {{date}}",
+    "share": "پارطاجي",
+    "sharepost": "پارطاجي التدوينة"
+  }
+}

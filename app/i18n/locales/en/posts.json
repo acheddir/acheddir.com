@@ -1,0 +1,15 @@
+{
+  "posts": {
+    "latest": "Posts"
+  },
+  "post": {
+    "blog": "Blog",
+    "toc": "Table of Contents",
+    "minutes_one": "1 minute read",
+    "minutes_other": "{{count}} minutes read",
+    "publishedon": "Published on {{date}}",
+    "updatedon": "Updated on {{date}}",
+    "share": "Share",
+    "sharepost": "Share Post"
+  }
+}

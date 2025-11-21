@@ -1,0 +1,29 @@
+{
+    "hero": {
+        "title": "سجل المطور",
+        "subtitle": "رحلة شخصية إلى عالم هندسة البرمجيات - مشاركة الأفكار والدروس المستفادة والاكتشافات التقنية"
+    },
+    "posts": {
+        "seeall": "شوف ڭاع التدوينات"
+    },
+    "sidebar": {
+        "location": {
+            "title": "فين أنا؟",
+            "city": "الدارالبيضاء"
+        },
+        "workingon": {
+            "title": "علاش خدام ؟",
+            "allprojects": "ڭاع المشاريع"
+        }
+    },
+    "newsletter": {
+        "title": "I also write deep dives in email",
+        "description": "I write about coding, software architecture, cloud computing, productivity and content creation",
+        "cta": "Join other engineers in getting better in business",
+        "unsubscribe": "Unsubscribe whenever you want",
+        "subscribe": "Subscribe"
+    },
+    "about": {
+        "whois": "شكون هاذ خونا عوتاني؟"
+    }
+}

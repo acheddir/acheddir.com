@@ -1,0 +1,102 @@
+---
+title: "Central Package Management for better dependency management in .NET"
+description: "Central package management centralizes packages versions across multiple projects in a .NET solution"
+publishedDate: "2025-02-25 08:00 +0100"
+lastUpdatedDate: "2025-02-25 08:00 +0100"
+tags:
+  - nuget
+  - package
+  - dependency
+  - cpm
+  - security
+  - dotnet
+status: published
+locale: en
+---
+
+With many years of developing enterprise solutions under my belt, one of the things I find challenging in almost any development ecosystem is dependency management.
+
+## Challenges
+
+### 1. Inconsistency and Maintenance Overhead
+As a former .NET developer, the teams I worked with, frequently found themselves unable to maintain consistent package versions across multiple projects within a .NET solution.
+
+As the solution scales, projects are added, and may reference different versions of the same package which can lead to unpredictable behavior or compatibility issues. An example of when this kind of issue manifests is when a developer tries to update a package in one project but overlooks doing the same in other projects which creates a fragmented dependency landscape.
+
+The need to update dependencies arises when new features are added, but more importantly when security vulnerabilities are discovered. The problem is the maintenance overhead that is driven by the traditional approach of updating them manually, which can be time-consuming and also prone to errors.
+
+### 2. Dependency hell
+
+Often, developers will encounter what is called "dependency hell", in those kinds of scenarios, different direct dependencies require different versions of the same transitive packages which will lead to conflicts that manifest as warnings or even fail the compilation process. Resolving these conflicts can easily become complex and costly in terms of time and effort.
+
+### 3. Compliance and policy enforcement
+
+Most organizations will face difficulties enforcing policies and standards related to package usage across their teams, especially organizations with security and compliance requirements, some of which are often subjects to auditing campaigns.
+
+Without a centralized approach for managing dependencies, individual developers or teams alike, can inadvertently introduce non-compliant or unapproved packages that violate organizational policies and create audit challenges and potential security vulnerabilities that may remain undetected until issues arise in production, or even worse, until they face a security breach.
+
+### 4. Onboarding new members
+
+When new developers join a team, they will face a steep learning curve to get a clear understanding of the dependency ecosystem especially in the context of large enterprise solutions. Without a central documentation determining which packages are used and which versions, it becomes a matter of insider knowledge passed between members rather than systematic development following a clear, documented process.
+
+### 5. "It works on my machine!"
+
+Inconsistent package versions will lead to reproducibility issues. For example when a build succeeds locally on a developer's machine, but fails in continuous integration environments, it will make teams encounter the "it works on my machine" syndrome, which is almost due to dependency resolution behavior.
+
+## Manage Dependency Consistency in .NET with Snitch
+
+[Snitch](https://github.com/spectresystems/snitch) is a powerful command-line tool that .NET developers can rely on to manage package versions consistency across multiple projects. It analyzes your entire solution and identifies :
+- Different versions of the same NuGet packages used across multiple projects.
+- Transitive dependencies that could introduce potential conflicts and might be removed.
+
+__Snitch__ operates by scanning package references in your solution's project files, and generates on the command-line a report of version inconsistencies.
+
+__Snitch__ can be used :
+- By developers to manually check inconsistencies locally.
+- In a Git pre-commit hook to prevent inconsistencies from getting into source control.
+- In CI/CD pipelines as a verification step.
+
+### Example with Snitch
+
+Here, I have a class library called `LibBar` referencing another library called `LibFoo` with a transitive dependency on `Newtonsoft.Json` (v13.0.3), this causes an inconsistency because `LibBar` already references another version (v12.0.3) of `Newtonsoft.Json` which already fails the `dotnet restore` command.
+
+:scream: _Note the high severity vulnerability warning related to version 12.0.3 of `Newtonsoft.Json`_.
+
+```powershell
+❯ dotnet restore
+    D:\SnitchDemo\src\LibBar\LibBar.csproj : warning NU1903: Package 'Newtonsoft.Json' 12.0.3 has a known high severity vulnerability, https://github.com/advisories/GHSA-5crp-9r3c-p9vr
+    D:\SnitchDemo\src\LibBar\LibBar.csproj : error NU1605:
+      Warning As Error: Detected package downgrade: Newtonsoft.Json fro
+      m 13.0.3 to 12.0.3. Reference the package directly from the proje
+      ct to select a different version.
+       LibBar -> LibFoo -> Newtonsoft.Json (>= 13.0.3)
+       LibBar -> Newtonsoft.Json (>= 12.0.3)
+
+Restore failed with 1 error(s) and 1 warning(s) in 0.5s
+```
+
+Running __Snitch__ against the .NET solution yields the following output that identifies an inconsistency related to the usage of `Newtonsoft.Json`:
+
+```powershell
+❯ snitch
+
+Analyzing SnitchDemo.sln
+Analyzing LibBar...
+  * Analyzing LibFoo (net9.0)...
+
+╭──────────────────────────────────────────────────────────────────╮
+│  Packages that might be removed from LibBar:                     │
+│ ┌─────────────────┬─────────┬──────────────────────────────────┐ │
+│ │ Package         │ Version │ Reason                           │ │
+│ ├─────────────────┼─────────┼──────────────────────────────────┤ │
+│ │ Newtonsoft.Json │ 12.0.3  │ Downgraded from 13.0.3 in LibFoo │ │
+│ └─────────────────┴─────────┴──────────────────────────────────┘ │
+╰──────────────────────────────────────────────────────────────────╯
+```
+
+While Snitch still a valuable tool for developers and teams managing package versions, it has some limitations :
+- Inconsistencies still need to be fixed manually.
+- It requires additional overhead work to incorporate into Git workflows and continuous integration pipelines.
+- It's only a detection tool, not a prevention mechanism, because it does not solve the fundamental problem of decentralized version definitions.
+
+## Old School Package Management in .NET

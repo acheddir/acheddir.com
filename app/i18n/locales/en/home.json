@@ -1,0 +1,29 @@
+{
+    "hero": {
+        "title": "The Dev Diary",
+        "subtitle": "A personal expedition to the world of software engineering - sharing insights, learned lessons, and technical discoveries"
+    },
+    "posts": {
+        "seeall": "See all posts"
+    },
+    "sidebar": {
+        "location": {
+            "title": "Where am I currently?",
+            "city": "Casablanca"
+        },
+        "workingon": {
+            "title": "What am I working on?",
+            "allprojects": "All projects"
+        }
+    },
+    "newsletter": {
+        "title": "I also write deep dives in email",
+        "description": "I write about coding, software architecture, cloud computing, productivity and content creation.",
+        "cta": "Join other engineers in getting better in business.",
+        "unsubscribe": "Unsubscribe whenever you want.",
+        "subscribe": "Subscribe"
+    },
+    "about": {
+        "whois": "Who's this guy again?"
+    }
+}

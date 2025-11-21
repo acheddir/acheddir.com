@@ -1,0 +1,46 @@
+{
+  "metadata": {
+    "title": "{{name}}'s Blog"
+  },
+  "author": {
+    "name": "Abderrahman Cheddir",
+    "jobTitle": "Software Developer & Architect"
+  },
+  "navbar": {
+    "content": "Content",
+    "blog": "Blog",
+    "posts": "Posts",
+    "tags": "Tags",
+    "categories": "Categories",
+    "archives": "Archives",
+    "newsletter": "Newsletters",
+    "videos": "Videos",
+    "projects": "Projects",
+    "uses": "Uses",
+    "now": "Now",
+    "search": "Search...",
+    "command": {
+      "placeholder": "Type a command or search...",
+      "social": "Social networks",
+      "theme": "Theme",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System",
+      "navigate": "navigate",
+      "select": "select",
+      "close": "close",
+      "clear": "Clear",
+      "noResults": "No results found.",
+      "poweredBy": "Powered by"
+    }
+  },
+  "archives": {
+    "description": "Browse all blog posts organized by date"
+  },
+  "categories": {
+    "title": "Categories",
+    "description": "Browse blog posts organized by categories",
+    "noPosts": "No posts in this category",
+    "other": "Other"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "tags": {
+    "title": "Tags",
+    "all": "All tags",
+    "allin": "All tags in {{title}}",
+    "postsin": "All posts in {{tag}}"
+  }
+}

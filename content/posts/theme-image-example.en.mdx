@@ -1,0 +1,76 @@
+---
+title: "Using Dark and Light Mode Images in MDX"
+description: "How to use the ThemeImage component for theme-aware images in your content"
+publishedDate: "2025-04-24 10:00 +0100"
+lastUpdatedDate: "2025-04-24 10:00 +0100"
+categories: []
+tags:
+  - mdx
+  - images
+  - darkmode
+  - tutorial
+status: published
+locale: en
+---
+
+# Using Theme-Aware Images in MDX
+
+The `ThemeImage` component allows you to display different images based on the user's current theme preference. This is particularly useful for:
+
+- Screenshots that need different versions for dark and light mode
+- Diagrams with theme-specific color schemes
+- Any visual content that should adapt to the user's theme preference
+
+## Basic Usage
+
+To use the ThemeImage component, you need to provide both a light version and a dark version of your image:
+
+```tsx
+<ThemeImage 
+  lightSrc="/path/to/light-mode-image.png"
+  darkSrc="/path/to/dark-mode-image.png"
+  alt="Description of the image"
+  width={800}
+  height={500}
+/>
+```
+
+## Example
+
+Here's how the component works. The image below will automatically switch between light and dark versions based on your current theme:
+
+<ThemeImage 
+  lightSrc="/avatar-hero-image.jpg"
+  darkSrc="/avatar.jpg"
+  alt="Profile photo that changes with theme"
+  width={400}
+  height={400}
+/>
+
+Let's also test if a standard image works:
+
+<TestImage />
+
+## With Custom Styling
+
+You can also add custom classes to control the appearance of your images:
+
+<ThemeImage 
+  lightSrc="/avatar.png"
+  darkSrc="/avatar.png"
+  alt="Avatar with custom styling"
+  width={200}
+  height={200}
+  className="border-4 border-primary rounded-full shadow-lg mx-auto"
+/>
+
+## When to Use
+
+Use the ThemeImage component when:
+
+1. You have visual content that needs to be legible in both dark and light modes
+2. Charts or diagrams that require different color schemes based on theme
+3. Screenshots of applications in different theme modes
+4. Any situation where a single image doesn't work well across both themes
+
+For regular images that work well in both light and dark mode, continue using the standard Image component.
