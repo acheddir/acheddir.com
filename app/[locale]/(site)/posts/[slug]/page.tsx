@@ -73,11 +73,13 @@ export async function generateMetadata(props: PostProps): Promise<Metadata> {
     locale: getDateLocale(locale),
   });
 
-  // Generate OG image URL
-  const ogImageUrl = new URL(`${BASE_URL}/api/og`);
-  ogImageUrl.searchParams.set('title', post.title);
-  ogImageUrl.searchParams.set('date', formattedDate);
-  ogImageUrl.searchParams.set('readingTime', post.metadata.readingTime.toString());
+  // Generate OG image URL (relative to metadataBase)
+  const ogImageParams = new URLSearchParams({
+    title: post.title,
+    date: formattedDate,
+    readingTime: post.metadata.readingTime.toString(),
+  });
+  const ogImageUrl = `/api/og?${ogImageParams.toString()}`;
 
   return {
     title: post.title,
@@ -98,7 +100,7 @@ export async function generateMetadata(props: PostProps): Promise<Metadata> {
       authors: [post?.author?.name || defaultAuthor.name],
       images: [
         {
-          url: ogImageUrl.toString(),
+          url: ogImageUrl,
           width: 1200,
           height: 630,
           alt: post.title,
@@ -109,7 +111,7 @@ export async function generateMetadata(props: PostProps): Promise<Metadata> {
       card: 'summary_large_image',
       title: post.title,
       description: post.description,
-      images: [ogImageUrl.toString()],
+      images: [ogImageUrl],
     },
   };
 }
