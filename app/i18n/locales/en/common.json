@@ -31,7 +31,10 @@
       "close": "close",
       "clear": "Clear",
       "noResults": "No results found.",
-      "poweredBy": "Powered by"
+      "poweredBy": "Powered by",
+      "commands": "Commands",
+      "toggleTheme": "Toggle theme",
+      "toggleThemeDesc": "Switch between light and dark mode"
     }
   },
   "archives": {

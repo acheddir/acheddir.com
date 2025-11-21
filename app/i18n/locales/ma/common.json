@@ -31,7 +31,10 @@
       "close": "سد",
       "clear": "امسح",
       "noResults": "ما لقينا والو.",
-      "poweredBy": "مشغل بـ"
+      "poweredBy": "مشغل بـ",
+      "commands": "أوامر",
+      "toggleTheme": "بدل المظهر",
+      "toggleThemeDesc": "بدل بين المظهر الناصع و الداكن"
     }
   },
   "archives": {

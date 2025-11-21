@@ -4,7 +4,6 @@ import { notFound } from 'next/navigation';
 import { PostSeries, PostWithSeries, SeriesItem } from '@/types';
 import { posts } from '#site/content';
 import { format, parseISO } from 'date-fns';
-import { Home } from 'lucide-react';
 
 import { BASE_URL, defaultAuthor } from '@/lib/metadata';
 import { cn } from '@/lib/utils';
@@ -13,6 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Mdx } from '@/components/mdx';
+import { PostBreadcrumb } from '@/components/post-breadcrumb';
 import { PostSeriesBox } from '@/components/post-series-box';
 import { SocialShare } from '@/components/social-share';
 import { TableOfContents } from '@/components/table-of-contents';
@@ -66,6 +66,19 @@ export async function generateMetadata(props: PostProps): Promise<Metadata> {
     return {};
   }
 
+  const { locale } = await props.params;
+
+  // Format the date for OG image
+  const formattedDate = format(parseISO(post.publishedDate), 'd LLLL yyyy', {
+    locale: getDateLocale(locale),
+  });
+
+  // Generate OG image URL
+  const ogImageUrl = new URL(`${BASE_URL}/api/og`);
+  ogImageUrl.searchParams.set('title', post.title);
+  ogImageUrl.searchParams.set('date', formattedDate);
+  ogImageUrl.searchParams.set('readingTime', post.metadata.readingTime.toString());
+
   return {
     title: post.title,
     description: post.description,
@@ -76,6 +89,28 @@ export async function generateMetadata(props: PostProps): Promise<Metadata> {
       },
     ],
     keywords: post.tags,
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      type: 'article',
+      publishedTime: post.publishedDate,
+      modifiedTime: post.lastUpdatedDate,
+      authors: [post?.author?.name || defaultAuthor.name],
+      images: [
+        {
+          url: ogImageUrl.toString(),
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.description,
+      images: [ogImageUrl.toString()],
+    },
   };
 }
 
@@ -110,60 +145,23 @@ export default async function PostPage(props: PostProps) {
 
   return (
     <div className="container max-w-6xl space-y-6 pb-10">
-      <nav aria-label="Breadcrumb">
-        <ol role="list" className="hidden items-center gap-1 text-sm text-muted-foreground md:flex md:flex-row">
-          <li>
-            <Link href="/" className="block transition hover:text-muted-foreground/70" aria-label="Go to Home">
-              <span className="sr-only"> Home </span>
-              <Home size={14} />
-            </Link>
-          </li>
-
-          <li className="rtl:rotate-180">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-              <path
-                fillRule="evenodd"
-                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </li>
-
-          <li>
-            <Link href="/posts" className="block transition hover:text-muted-foreground/70">
-              {t('post.blog')}
-            </Link>
-          </li>
-
-          <li className="rtl:rotate-180">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-              <path
-                fillRule="evenodd"
-                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </li>
-
-          <li>
-            <Link href="#" className="block transition hover:text-muted-foreground/70">
-              {post.title}
-            </Link>
-          </li>
-        </ol>
-      </nav>
+      <PostBreadcrumb categories={post.categories} title={post.title} locale={locale} blogLabel={t('post.blog')} />
       <div className="flex flex-col lg:flex-row">
         <div className="lg:hidden">
           <div className="mb-4 mt-1 text-sm leading-snug text-muted-foreground">
             <p className="mb-2">{t('post.minutes', { count: post.metadata.readingTime })}</p>
             <time dateTime={post.publishedDate}>
-               {t('post.publishedon', { date: format(parseISO(post.publishedDate), 'd LLLL yyyy')}) }
+              {t('post.publishedon', { date: format(parseISO(post.publishedDate), 'd LLLL yyyy') })}
             </time>
             <br />
             {post.lastUpdatedDate && (
-              <time dateTime={post.lastUpdatedDate}>{t('post.updatedon', { date: format(parseISO(post.lastUpdatedDate), 'd LLLL yyyy', {
-                locale: getDateLocale(locale)
-              }) })}</time>
+              <time dateTime={post.lastUpdatedDate}>
+                {t('post.updatedon', {
+                  date: format(parseISO(post.lastUpdatedDate), 'd LLLL yyyy', {
+                    locale: getDateLocale(locale),
+                  }),
+                })}
+              </time>
             )}
           </div>
           <Accordion type="single" collapsible>
@@ -198,7 +196,10 @@ export default async function PostPage(props: PostProps) {
               <ul className="m-0 list-none space-x-2 p-0 text-sm text-muted-foreground">
                 {post.tags.map((tag: string) => (
                   <li className="mx-2 inline-block p-0" key={tag}>
-                    <Link href={`/${locale}/tags/${tag}`} className="inline-block transition hover:text-muted-foreground/70">
+                    <Link
+                      href={`/${locale}/tags/${tag}`}
+                      className="inline-block transition hover:text-muted-foreground/70"
+                    >
                       <Badge
                         variant="outline"
                         className="inline-block rounded-full border border-muted-foreground/50 bg-muted-foreground/10 px-2 py-0.5 text-xs text-muted-foreground"
@@ -210,7 +211,11 @@ export default async function PostPage(props: PostProps) {
                 ))}
               </ul>
             )}
-            <SocialShare locale={locale} text={`${post.title} via ${defaultAuthor.handle}`} url={`${BASE_URL}/${locale}/${post.slug}`} />
+            <SocialShare
+              locale={locale}
+              text={`${post.title} via ${defaultAuthor.handle}`}
+              url={`${BASE_URL}/${locale}/${post.slug}`}
+            />
           </div>
         </article>
         <aside className="hidden lg:block">
@@ -223,19 +228,29 @@ export default async function PostPage(props: PostProps) {
             <CardHeader>
               <CardTitle>{t('post.toc')}</CardTitle>
             </CardHeader>
-            <CardContent className="grid gap-4"><TableOfContents toc={post.toc} /></CardContent>
+            <CardContent className="grid gap-4">
+              <TableOfContents toc={post.toc} />
+            </CardContent>
             <Separator />
             <CardFooter>
               <div className="mb-2 mt-4 text-sm leading-snug text-muted-foreground">
                 <p className="mb-2">{t('post.minutes', { count: post.metadata.readingTime })}</p>
-                <time dateTime={post.publishedDate}>{t('post.publishedon', { date: format(parseISO(post.publishedDate), 'd LLLL yyyy', {
-                  locale: getDateLocale(locale)
-                })}) }</time>
+                <time dateTime={post.publishedDate}>
+                  {t('post.publishedon', {
+                    date: format(parseISO(post.publishedDate), 'd LLLL yyyy', {
+                      locale: getDateLocale(locale),
+                    }),
+                  })}
+                </time>
                 <br />
                 {post.lastUpdatedDate && (
-                  <time dateTime={post.lastUpdatedDate}>{t('post.updatedon', { date: format(parseISO(post.lastUpdatedDate), 'd LLLL yyyy', {
-                    locale: getDateLocale(locale)
-                  }) })}</time>
+                  <time dateTime={post.lastUpdatedDate}>
+                    {t('post.updatedon', {
+                      date: format(parseISO(post.lastUpdatedDate), 'd LLLL yyyy', {
+                        locale: getDateLocale(locale),
+                      }),
+                    })}
+                  </time>
                 )}
               </div>
             </CardFooter>

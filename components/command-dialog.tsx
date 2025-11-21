@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
 import { DialogProps } from '@radix-ui/react-dialog';
-import { ArrowDown, ArrowUp, BookOpen, CornerDownLeft, Loader2, Tag, X } from 'lucide-react';
+import { ArrowDown, ArrowUp, BookOpen, CornerDownLeft, Loader, Moon, Sun, Tag, Terminal, X } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
 import { cn } from '@/lib/utils';
@@ -25,15 +25,61 @@ interface CommandDialogProps extends DialogProps {
   locale: string;
 }
 
+interface Command {
+  id: string;
+  name: string;
+  description: string;
+  icon: React.ComponentType<{ className?: string }>;
+  action: () => void;
+}
+
 export function CommandDialogComponent({ locale, ...props }: CommandDialogProps) {
   const { t } = useTranslation(locale, 'common');
   const isRtl = i18next.dir(locale) === 'rtl';
-  const { theme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState('');
-  const { results: blogPosts, tags, isSearching } = useAlgoliaSearch(searchQuery, locale);
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  // Check if the query starts with '/' for command mode
+  const isCommandMode = searchQuery.startsWith('/');
+  const commandQuery = isCommandMode ? searchQuery.slice(1).toLowerCase() : '';
+
+  // Only search Algolia if not in command mode
+  const { results: blogPosts, tags, isSearching } = useAlgoliaSearch(
+    isCommandMode ? '' : searchQuery,
+    locale
+  );
+
+  // Define available commands
+  const commands: Command[] = React.useMemo(
+    () => [
+      {
+        id: 'toggle-theme',
+        name: `/toggle-theme`,
+        description: t('navbar.command.toggleThemeDesc'),
+        icon: theme === 'dark' ? Sun : Moon,
+        action: () => {
+          setTheme(theme === 'dark' ? 'light' : 'dark');
+        },
+      },
+    ],
+    [theme, setTheme, t]
+  );
+
+  // Filter commands based on the query
+  const filteredCommands = React.useMemo(() => {
+    if (!isCommandMode) return [];
+    if (commandQuery === '') return commands;
+    return commands.filter(
+      (cmd) =>
+        cmd.id.includes(commandQuery) ||
+        cmd.name.toLowerCase().includes(commandQuery) ||
+        cmd.description.toLowerCase().includes(commandQuery)
+    );
+  }, [isCommandMode, commandQuery, commands]);
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -46,6 +92,18 @@ export function CommandDialogComponent({ locale, ...props }: CommandDialogProps)
     document.addEventListener('keydown', down);
     return () => document.removeEventListener('keydown', down);
   }, []);
+
+  // Focus and select text when dialog opens
+  React.useEffect(() => {
+    if (open && inputRef.current) {
+      // Use a longer timeout to ensure the dialog animation completes
+      const timer = setTimeout(() => {
+        inputRef.current?.focus();
+        inputRef.current?.select();
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [open]);
 
   const navigate = (href: string) => {
     if (href.startsWith('http')) {
@@ -98,6 +156,7 @@ export function CommandDialogComponent({ locale, ...props }: CommandDialogProps)
         {searchQuery && (
           <button
             onClick={() => setSearchQuery('')}
+            tabIndex={-1}
             className={cn(
               'group absolute top-4 z-10 flex h-8 items-center gap-1.5 text-sm opacity-70 transition-all hover:opacity-100',
               {
@@ -113,21 +172,56 @@ export function CommandDialogComponent({ locale, ...props }: CommandDialogProps)
           </button>
         )}
         <CommandInput
+          ref={inputRef}
           isRtl={isRtl}
           placeholder={t('navbar.command.placeholder')}
           value={searchQuery}
           onValueChange={setSearchQuery}
+          autoFocus
         />
         <CommandList>
-          {searchQuery.length >= 2 && isSearching && (
-            <div className="flex items-center justify-center py-6">
-              <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-            </div>
+          {/* Command Mode */}
+          {isCommandMode && filteredCommands.length > 0 && (
+            <CommandGroup heading={t('navbar.command.commands')}>
+              {filteredCommands.map((command) => {
+                const Icon = command.icon;
+                return (
+                  <CommandItem
+                    key={command.id}
+                    onSelect={() => {
+                      runCommand(command.action);
+                    }}
+                  >
+                    <Icon className="h-5 w-5 ltr:mr-2 rtl:ml-2" />
+                    <div className="flex flex-col">
+                      <span className="text-base font-medium text-slate-900 dark:text-slate-50">{command.name}</span>
+                      <span className="text-sm text-slate-600 dark:text-slate-400">{command.description}</span>
+                    </div>
+                  </CommandItem>
+                );
+              })}
+            </CommandGroup>
           )}
-          {searchQuery.length >= 2 && !isSearching && blogPosts.length === 0 && tags.length === 0 && (
+
+          {/* Command Mode - No Results */}
+          {isCommandMode && filteredCommands.length === 0 && (
             <CommandEmpty>{t('navbar.command.noResults')}</CommandEmpty>
           )}
-          {blogPosts.length > 0 && (
+
+          {/* Search Mode - Loading */}
+          {!isCommandMode && searchQuery.length >= 2 && isSearching && (
+            <div className="flex items-center justify-center py-6">
+              <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+            </div>
+          )}
+
+          {/* Search Mode - No Results */}
+          {!isCommandMode && searchQuery.length >= 2 && !isSearching && blogPosts.length === 0 && tags.length === 0 && (
+            <CommandEmpty>{t('navbar.command.noResults')}</CommandEmpty>
+          )}
+
+          {/* Search Mode - Blog Posts */}
+          {!isCommandMode && blogPosts.length > 0 && (
             <CommandGroup heading={t('navbar.posts') || 'Blog Posts'}>
               {blogPosts.map((post) => (
                 <CommandItem
@@ -155,7 +249,9 @@ export function CommandDialogComponent({ locale, ...props }: CommandDialogProps)
               ))}
             </CommandGroup>
           )}
-          {tags.length > 0 && (
+
+          {/* Search Mode - Tags */}
+          {!isCommandMode && tags.length > 0 && (
             <CommandGroup heading={t('navbar.tags') || 'Tags'}>
               {tags.map((tag) => (
                 <CommandItem
