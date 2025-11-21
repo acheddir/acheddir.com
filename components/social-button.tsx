@@ -16,8 +16,8 @@ export function SocialButton({ platform, ...props }: SocialButtonProps) {
   const platformIconIdentifier = `si${platformCamel}`;
 
   const renderIcon = () => {
-    const icon: SimpleIcon = Icons[platformIconIdentifier as keyof typeof Icons];
-    if (!icon) {
+    const icon = Icons[platformIconIdentifier as keyof typeof Icons] as SimpleIcon;
+    if (!icon || typeof icon !== 'object' || !('path' in icon)) {
       return null;
     }
     return (
