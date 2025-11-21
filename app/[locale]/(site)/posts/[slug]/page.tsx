@@ -216,7 +216,7 @@ export default async function PostPage(props: PostProps) {
             <SocialShare
               locale={locale}
               text={`${post.title} via ${defaultAuthor.handle}`}
-              url={`${BASE_URL}/${locale}/${post.slug}`}
+              url={`${BASE_URL}/${locale}/posts/${post.slug}`}
             />
           </div>
         </article>
