@@ -112,6 +112,8 @@ export async function generateMetadata(props: PostProps): Promise<Metadata> {
       title: post.title,
       description: post.description,
       images: [ogImageUrl],
+      creator: defaultAuthor.handle,
+      site: defaultAuthor.handle,
     },
   };
 }

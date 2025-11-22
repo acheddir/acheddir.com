@@ -2,9 +2,11 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import Casablanca from '@/public/casablanca.jpg';
+import ProjectPejobs from '@/public/project-pejobs.png';
 import { ArrowLeft, ArrowRight, MapPin, Pencil } from 'lucide-react';
 
-import { siteMetadata, defaultAuthor } from '@/lib/metadata';
+import { defaultAuthor, siteMetadata } from '@/lib/metadata';
 import { projects } from '@/lib/projects-data';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -12,9 +14,6 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Separator } from '@/components/ui/separator';
 import { useTranslation } from '@/app/i18n/client';
 import i18next from '@/app/i18n/i18next';
-
-import Casablanca from '@/public/casablanca.jpg';
-import ProjectPejobs from '@/public/project-pejobs.png';
 
 type CardProps = React.ComponentProps<typeof Card>;
 
@@ -64,7 +63,7 @@ export const Sidebar = ({ className, locale, ...props }: SidebarProps) => {
           <CardTitle>{t('sidebar.workingon.title')}</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4">
-          {projects.slice(0, siteMetadata.projectsOnHomePage).map((project) => (
+          {/*{projects.slice(0, siteMetadata.projectsOnHomePage).map((project) => (
             <Link
               href={project.href}
               target="_blank"
@@ -95,7 +94,7 @@ export const Sidebar = ({ className, locale, ...props }: SidebarProps) => {
                 />
               )}
             </Link>
-          ))}
+          ))}*/}
         </CardContent>
         <Separator />
         <CardFooter>
