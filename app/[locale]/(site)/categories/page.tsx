@@ -87,6 +87,7 @@ function buildCategoryTree(
 export default async function CategoriesPage(props: CategoriesProps) {
   const { locale } = await props.params;
   const { t } = await useTranslation(locale, 'common');
+  const isRtl = locale === 'ma';
 
   // Build the category tree
   const { tree: categoryTree, uncategorizedPosts } = buildCategoryTree(posts, locale);
@@ -108,6 +109,7 @@ export default async function CategoriesPage(props: CategoriesProps) {
               uncategorizedPosts={uncategorizedPosts}
               locale={locale}
               otherLabel={t('categories.other')}
+              isRtl={isRtl}
             />
           ) : (
             <p className="text-muted-foreground">{t('categories.noPosts')}</p>

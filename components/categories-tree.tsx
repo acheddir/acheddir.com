@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ChevronDown, ChevronRight, FileText, Folder, FolderOpen } from 'lucide-react';
+import { ChevronDown, ChevronLeft, ChevronRight, FileText, Folder, FolderOpen } from 'lucide-react';
 
 interface CategoryNode {
   name: string;
@@ -24,15 +24,17 @@ interface CategoriesTreeProps {
   }>;
   locale: string;
   otherLabel: string;
+  isRtl?: boolean;
 }
 
 interface CategoryTreeNodeProps {
   node: CategoryNode;
   locale: string;
   level?: number;
+  isRtl?: boolean;
 }
 
-function CategoryTreeNode({ node, locale, level = 0 }: CategoryTreeNodeProps) {
+function CategoryTreeNode({ node, locale, level = 0, isRtl = false }: CategoryTreeNodeProps) {
   const isRoot = level === 0;
   // Root is always expanded (it's invisible), other categories start collapsed
   const [isExpanded, setIsExpanded] = useState(isRoot);
@@ -44,7 +46,7 @@ function CategoryTreeNode({ node, locale, level = 0 }: CategoryTreeNodeProps) {
   };
 
   return (
-    <div className={isRoot ? '' : 'ml-6'}>
+    <div className={isRoot ? '' : isRtl ? 'mr-6' : 'ml-6'}>
       {!isRoot && (
         <div
           className="mb-2 flex cursor-pointer items-center gap-2 transition-opacity hover:opacity-80"
@@ -65,9 +67,11 @@ function CategoryTreeNode({ node, locale, level = 0 }: CategoryTreeNodeProps) {
 
           {/* Chevron */}
           {(hasChildren || hasPosts) && (
-            <div className="ml-auto">
+            <div className={isRtl ? 'mr-auto' : 'ml-auto'}>
               {isExpanded ? (
                 <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform" />
+              ) : isRtl ? (
+                <ChevronLeft className="h-4 w-4 text-muted-foreground transition-transform" />
               ) : (
                 <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform" />
               )}
@@ -88,7 +92,9 @@ function CategoryTreeNode({ node, locale, level = 0 }: CategoryTreeNodeProps) {
           >
             {/* Render posts at this level */}
             {hasPosts && (
-              <div className={`space-y-1 ${!isRoot ? 'mb-3 ml-6' : 'mb-3'}`}>
+              <div
+                className={`space-y-1 ${!isRoot ? (isRtl ? 'mb-3 mr-6' : 'mb-3 ml-6') : 'mb-3'}`}
+              >
                 {node.posts.map((post) => (
                   <div key={post.slug} className="flex items-center gap-2">
                     <FileText className="h-3 w-3 text-muted-foreground" />
@@ -107,7 +113,7 @@ function CategoryTreeNode({ node, locale, level = 0 }: CategoryTreeNodeProps) {
             {hasChildren && (
               <div className="space-y-3">
                 {Array.from(node.children.values()).map((child) => (
-                  <CategoryTreeNode key={child.name} node={child} locale={locale} level={level + 1} />
+                  <CategoryTreeNode key={child.name} node={child} locale={locale} level={level + 1} isRtl={isRtl} />
                 ))}
               </div>
             )}
@@ -118,7 +124,13 @@ function CategoryTreeNode({ node, locale, level = 0 }: CategoryTreeNodeProps) {
   );
 }
 
-export function CategoriesTree({ categoryTree, uncategorizedPosts, locale, otherLabel }: CategoriesTreeProps) {
+export function CategoriesTree({
+  categoryTree,
+  uncategorizedPosts,
+  locale,
+  otherLabel,
+  isRtl = false,
+}: CategoriesTreeProps) {
   const [isOtherExpanded, setIsOtherExpanded] = useState(false);
   const hasCategories = categoryTree.children.size > 0;
   const hasUncategorized = uncategorizedPosts.length > 0;
@@ -126,12 +138,12 @@ export function CategoriesTree({ categoryTree, uncategorizedPosts, locale, other
   return (
     <>
       {/* Categorized posts */}
-      {hasCategories && <CategoryTreeNode node={categoryTree} locale={locale} />}
+      {hasCategories && <CategoryTreeNode node={categoryTree} locale={locale} isRtl={isRtl} />}
 
       {/* Uncategorized posts under "Other" */}
       {hasUncategorized && (
         <div className={`space-y-3 ${hasCategories ? 'mt-3' : ''}`}>
-          <div className="ml-6">
+          <div className={isRtl ? 'mr-6' : 'ml-6'}>
             <div
               className="mb-2 flex cursor-pointer items-center gap-2 transition-opacity hover:opacity-80"
               onClick={() => setIsOtherExpanded(!isOtherExpanded)}
@@ -143,9 +155,11 @@ export function CategoriesTree({ categoryTree, uncategorizedPosts, locale, other
               )}
               <span className="font-semibold text-foreground">{otherLabel}</span>
               <span className="text-xs text-muted-foreground">({uncategorizedPosts.length})</span>
-              <div className="ml-auto">
+              <div className={isRtl ? 'mr-auto' : 'ml-auto'}>
                 {isOtherExpanded ? (
                   <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform" />
+                ) : isRtl ? (
+                  <ChevronLeft className="h-4 w-4 text-muted-foreground transition-transform" />
                 ) : (
                   <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform" />
                 )}
@@ -161,7 +175,7 @@ export function CategoriesTree({ categoryTree, uncategorizedPosts, locale, other
                   transition={{ duration: 0.3, ease: 'easeInOut' }}
                   style={{ overflow: 'hidden' }}
                 >
-                  <div className="mb-3 ml-6 space-y-1">
+                  <div className={`mb-3 space-y-1 ${isRtl ? 'mr-6' : 'ml-6'}`}>
                     {uncategorizedPosts.map((post) => (
                       <div key={post.slug} className="flex items-center gap-2">
                         <FileText className="h-3 w-3 text-muted-foreground" />
