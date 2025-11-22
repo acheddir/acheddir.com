@@ -3,12 +3,12 @@ import '../styles/devicon.min.css';
 
 import Head from 'next/head';
 import { bouazziMaghribi, fustat, ibmPlexSansArabic, inter, spaceGrotesk } from '@/fonts/fonts';
+import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
 import { BASE_URL, defaultAuthor, siteMetadata } from '@/lib/metadata';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
-import { Analytics } from '@/components/analytics';
 import { BackTopButton } from '@/components/back-to-top';
 import { ThemeProvider } from '@/components/theme-provider';
 
@@ -64,7 +64,6 @@ export default async function RootLayout(props: RootLayoutProps) {
       suppressHydrationWarning={true}
     >
       <body className="min-h-screen bg-gradient-to-b from-slate-100 to-white text-slate-900 antialiased dark:bg-gradient-to-b dark:from-gray-900 dark:to-gray-800 dark:text-slate-50">
-        <SpeedInsights />
         <ThemeProvider attribute="class" defaultTheme={siteMetadata.defaultTheme} enableSystem>
           {children}
           <BackTopButton />
@@ -72,6 +71,7 @@ export default async function RootLayout(props: RootLayoutProps) {
         </ThemeProvider>
       </body>
       <Analytics />
+      <SpeedInsights />
     </html>
   );
 }
