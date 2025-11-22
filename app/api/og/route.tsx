@@ -25,13 +25,12 @@ export async function GET(request: NextRequest) {
             width: '100%',
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
             position: 'relative',
             fontFamily: '"Space Grotesk", system-ui, sans-serif',
+            background: '#0a0a0f',
           }}
         >
-          {/* Gradient Background */}
+          {/* Grid Pattern Background */}
           <div
             style={{
               position: 'absolute',
@@ -39,124 +38,271 @@ export async function GET(request: NextRequest) {
               left: 0,
               right: 0,
               bottom: 0,
-              background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f1e 100%)',
+              background: '#0a0a0f',
               display: 'flex',
             }}
           />
-
-          {/* Decorative gradient orbs */}
-          <div
+          <svg
             style={{
               position: 'absolute',
-              top: '-20%',
-              right: '-10%',
-              width: '600px',
-              height: '600px',
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%)',
-              display: 'flex',
-            }}
-          />
-          <div
-            style={{
-              position: 'absolute',
-              bottom: '-20%',
-              left: '-10%',
-              width: '500px',
-              height: '500px',
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(147, 51, 234, 0.2) 0%, transparent 70%)',
-              display: 'flex',
-            }}
-          />
-
-          {/* Author name - top left */}
-          <div
-            style={{
-              position: 'absolute',
-              top: 50,
-              left: 60,
-              fontSize: 28,
-              color: 'rgba(255, 255, 255, 0.9)',
-              fontWeight: 700,
-              display: 'flex',
-              letterSpacing: '-0.02em',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              width: '100%',
+              height: '100%',
             }}
           >
-            {author}
+            <defs>
+              <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                <path
+                  d="M 40 0 L 0 0 0 40"
+                  fill="none"
+                  stroke="rgba(6, 182, 212, 0.1)"
+                  strokeWidth="1"
+                />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+          </svg>
+
+          {/* Gradient Overlays */}
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background:
+                'radial-gradient(circle at 20% 30%, rgba(6, 182, 212, 0.15) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.15) 0%, transparent 50%)',
+              display: 'flex',
+            }}
+          />
+
+          {/* Geometric Shapes */}
+          <div
+            style={{
+              position: 'absolute',
+              top: 60,
+              right: 80,
+              width: '120px',
+              height: '120px',
+              border: '3px solid rgba(6, 182, 212, 0.3)',
+              transform: 'rotate(45deg)',
+              display: 'flex',
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              bottom: 80,
+              left: 100,
+              width: '80px',
+              height: '80px',
+              border: '3px solid rgba(168, 85, 247, 0.3)',
+              borderRadius: '50%',
+              display: 'flex',
+            }}
+          />
+
+          {/* Top Bar - Terminal Style */}
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '60px',
+              background: 'linear-gradient(90deg, rgba(6, 182, 212, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%)',
+              borderBottom: '2px solid rgba(6, 182, 212, 0.4)',
+              display: 'flex',
+              alignItems: 'center',
+              paddingLeft: '60px',
+              paddingRight: '60px',
+            }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 10,
+              }}
+            >
+              <div
+                style={{
+                  width: '12px',
+                  height: '12px',
+                  borderRadius: '50%',
+                  background: '#ef4444',
+                  display: 'flex',
+                }}
+              />
+              <div
+                style={{
+                  width: '12px',
+                  height: '12px',
+                  borderRadius: '50%',
+                  background: '#f59e0b',
+                  display: 'flex',
+                }}
+              />
+              <div
+                style={{
+                  width: '12px',
+                  height: '12px',
+                  borderRadius: '50%',
+                  background: '#10b981',
+                  display: 'flex',
+                }}
+              />
+            </div>
+            <div
+              style={{
+                marginLeft: 'auto',
+                fontSize: 18,
+                color: 'rgba(6, 182, 212, 0.8)',
+                fontWeight: 600,
+                display: 'flex',
+                fontFamily: 'monospace',
+              }}
+            >
+              ~/blog/{author.toLowerCase().replace(' ', '-')}
+            </div>
           </div>
 
-          {/* Glass Card Container */}
+          {/* Main Content */}
           <div
             style={{
               display: 'flex',
               flexDirection: 'column',
-              width: '90%',
-              maxWidth: '1000px',
-              padding: '60px 70px',
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06))',
-              borderRadius: '32px',
-              border: '2px solid rgba(255, 255, 255, 0.2)',
-              boxShadow: '0 20px 60px 0 rgba(0, 0, 0, 0.5)',
+              justifyContent: 'center',
+              flex: 1,
+              padding: '120px 80px 100px',
             }}
           >
+            {/* Code Prompt Indicator */}
+            <div
+              style={{
+                fontSize: 32,
+                color: '#10b981',
+                fontFamily: 'monospace',
+                marginBottom: 30,
+                display: 'flex',
+              }}
+            >
+              $ cat blog-post.md
+            </div>
+
             {/* Title */}
             <div
               style={{
-                fontSize: 68,
+                fontSize: 64,
                 fontWeight: 700,
                 color: '#ffffff',
                 lineHeight: 1.15,
                 display: 'flex',
-                letterSpacing: '-0.03em',
-                textShadow: '0 2px 10px rgba(0, 0, 0, 0.3)',
+                letterSpacing: '-0.025em',
+                marginBottom: 40,
+                textShadow: '0 0 40px rgba(6, 182, 212, 0.3)',
               }}
             >
               {title}
             </div>
 
-            {/* Metadata - Date and Reading Time */}
-            {(date || readingTime) && (
-              <div
-                style={{
-                  display: 'flex',
-                  gap: 32,
-                  fontSize: 26,
-                  color: 'rgba(255, 255, 255, 0.75)',
-                  marginTop: 40,
-                  fontWeight: 500,
-                }}
-              >
-                {date && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <span style={{ display: 'flex' }}>📅</span>
-                    <span style={{ display: 'flex' }}>{date}</span>
-                  </div>
-                )}
-                {readingTime && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <span style={{ display: 'flex' }}>⏱️</span>
-                    <span style={{ display: 'flex' }}>{readingTime} min read</span>
-                  </div>
-                )}
-              </div>
-            )}
+            {/* Metadata Bar */}
+            <div
+              style={{
+                display: 'flex',
+                gap: 40,
+                alignItems: 'center',
+              }}
+            >
+              {date && (
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 12,
+                    fontSize: 22,
+                    color: 'rgba(6, 182, 212, 0.9)',
+                  }}
+                >
+                  <span
+                    style={{
+                      display: 'flex',
+                      width: '6px',
+                      height: '6px',
+                      borderRadius: '50%',
+                      background: '#06b6d4',
+                    }}
+                  />
+                  <span style={{ display: 'flex' }}>{date}</span>
+                </div>
+              )}
+              {readingTime && (
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 12,
+                    fontSize: 22,
+                    color: 'rgba(168, 85, 247, 0.9)',
+                  }}
+                >
+                  <span
+                    style={{
+                      display: 'flex',
+                      width: '6px',
+                      height: '6px',
+                      borderRadius: '50%',
+                      background: '#a855f7',
+                    }}
+                  />
+                  <span style={{ display: 'flex' }}>{readingTime} min read</span>
+                </div>
+              )}
+            </div>
+
+            {/* Accent Line */}
+            <div
+              style={{
+                marginTop: 50,
+                height: '4px',
+                width: '200px',
+                background: 'linear-gradient(90deg, #06b6d4 0%, #a855f7 100%)',
+                borderRadius: '2px',
+                display: 'flex',
+              }}
+            />
           </div>
 
-          {/* Site Name - bottom right */}
+          {/* Bottom Bar - Domain */}
           <div
             style={{
               position: 'absolute',
-              bottom: 50,
-              right: 60,
-              fontSize: 30,
-              color: 'rgba(255, 255, 255, 0.6)',
-              fontWeight: 600,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: '60px',
+              background: 'linear-gradient(90deg, rgba(6, 182, 212, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%)',
+              borderTop: '2px solid rgba(6, 182, 212, 0.3)',
               display: 'flex',
-              letterSpacing: '-0.01em',
+              alignItems: 'center',
+              paddingLeft: '80px',
+              paddingRight: '80px',
             }}
           >
-            acheddir.com
+            <div
+              style={{
+                fontSize: 24,
+                color: 'rgba(255, 255, 255, 0.7)',
+                fontWeight: 600,
+                display: 'flex',
+              }}
+            >
+              acheddir.com
+            </div>
           </div>
         </div>
       ),
