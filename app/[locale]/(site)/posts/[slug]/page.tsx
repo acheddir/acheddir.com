@@ -11,6 +11,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { DisqusComments } from '@/components/disqus-comments';
 import { Mdx } from '@/components/mdx';
 import { PostBreadcrumb } from '@/components/post-breadcrumb';
 import { PostSeriesBox } from '@/components/post-series-box';
@@ -219,6 +220,18 @@ export default async function PostPage(props: PostProps) {
               locale={locale}
               text={`${post.title} via ${defaultAuthor.handle}`}
               url={`${BASE_URL}/${locale}/posts/${post.slug}`}
+            />
+          </div>
+          <hr className="my-4" />
+          <div>
+            <DisqusComments
+              shortname="acheddir"
+              config={{
+                url: `${BASE_URL}/${locale}/posts/${post.slug}`,
+                identifier: post.slug,
+                title: post.title,
+                language: locale,
+              }}
             />
           </div>
         </article>
