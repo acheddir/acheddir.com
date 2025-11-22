@@ -49,11 +49,20 @@ export function DisqusComments({ shortname, config }: DisqusCommentsProps) {
 }
 
 // Type declarations for Disqus
+interface DisqusConfig {
+  page: {
+    url: string;
+    identifier: string;
+    title: string;
+  };
+  language: string;
+}
+
 declare global {
   interface Window {
     DISQUS?: {
-      reset: (options: { reload: boolean; config: () => void }) => void;
+      reset: (options: { reload: boolean; config: (this: DisqusConfig) => void }) => void;
     };
-    disqus_config?: () => void;
+    disqus_config?: (this: DisqusConfig) => void;
   }
 }
