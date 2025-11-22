@@ -69,9 +69,9 @@ export default async function RootLayout(props: RootLayoutProps) {
           <BackTopButton />
           <Toaster />
         </ThemeProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
-      <Analytics />
-      <SpeedInsights />
     </html>
   );
 }

@@ -163,7 +163,17 @@ Required in `.env.local`:
 - `EMAIL_API_BASE` - MailerLite API base URL
 - `EMAIL_API_KEY` - MailerLite API token
 - `EMAIL_GROUP_ID` - MailerLite subscriber group ID
-- `NEXT_PUBLIC_DISQUS_SHORTNAME` - Disqus site shortname for comments (optional)
+
+## Comments System
+
+The blog uses [Utterances](https://utteranc.es/) for comments, which stores comments as GitHub issues in the repository. Utterances is configured with:
+- Repository: `acheddir/acheddir.com`
+- Theme: Automatically syncs with the site's dark/light theme (using `next-themes`)
+- Issue mapping: `pathname` (creates issues based on the post URL path)
+
+The Utterances component detects theme changes and dynamically updates the comment box theme in real-time.
+
+To enable comments, install the Utterances app on your GitHub repository at https://github.com/apps/utterances
 
 ## Key Implementation Patterns
 
