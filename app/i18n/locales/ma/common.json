@@ -34,7 +34,8 @@
       "poweredBy": "مشغل بـ",
       "commands": "أوامر",
       "toggleTheme": "بدل المظهر",
-      "toggleThemeDesc": "بدل بين المظهر الناصع و الداكن"
+      "toggleThemeDesc": "بدل بين المظهر الناصع و الداكن",
+      "switchLanguageDesc": "بدل بين الإنجليزية و الدارجة المغربية"
     }
   },
   "archives": {

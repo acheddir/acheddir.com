@@ -34,7 +34,8 @@
       "poweredBy": "Powered by",
       "commands": "Commands",
       "toggleTheme": "Toggle theme",
-      "toggleThemeDesc": "Switch between light and dark mode"
+      "toggleThemeDesc": "Switch between light and dark mode",
+      "switchLanguageDesc": "Switch between English and Moroccan Arabic"
     }
   },
   "archives": {

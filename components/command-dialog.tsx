@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { DialogProps } from '@radix-ui/react-dialog';
-import { ArrowDown, ArrowUp, BookOpen, CornerDownLeft, Loader, Moon, Sun, Tag, Terminal, X } from 'lucide-react';
+import { ArrowDown, ArrowUp, BookOpen, CornerDownLeft, Languages, Loader, Moon, Sun, Tag, Terminal, X } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
 import { cn } from '@/lib/utils';
@@ -34,11 +34,12 @@ interface Command {
 }
 
 export function CommandDialogComponent({ locale, ...props }: CommandDialogProps) {
-  const { t } = useTranslation(locale, 'common');
+  const { t, i18n } = useTranslation(locale, 'common');
   const isRtl = i18next.dir(locale) === 'rtl';
   const { theme, setTheme } = useTheme();
 
   const router = useRouter();
+  const pathname = usePathname();
   const [open, setOpen] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState('');
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -65,8 +66,19 @@ export function CommandDialogComponent({ locale, ...props }: CommandDialogProps)
           setTheme(theme === 'dark' ? 'light' : 'dark');
         },
       },
+      {
+        id: 'switch-language',
+        name: `/switch-language`,
+        description: t('navbar.command.switchLanguageDesc'),
+        icon: Languages,
+        action: () => {
+          const newLocale = locale === 'en' ? 'ma' : 'en';
+          const newPath = pathname?.replace(`/${locale}`, `/${newLocale}`) || `/${newLocale}`;
+          router.push(newPath);
+        },
+      },
     ],
-    [theme, setTheme, t]
+    [theme, setTheme, t, i18n.resolvedLanguage, pathname, router]
   );
 
   // Filter commands based on the query
