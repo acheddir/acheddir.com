@@ -23,7 +23,7 @@ export const LocaleToggle = ({ locale }: { locale: string }) => {
         'ml-4 sm:ml-0': isRtl,
       })}
     >
-      <Link href={localizedPathname}>
+      <Link href={localizedPathname} aria-label={`Switch to ${localizedPathname}`}>
         {/* Motion Wrapper */}
         <motion.div className="relative h-full w-full" whileHover="hover" style={{ display: 'inline-block' }}>
           {/* Current Flag */}
