@@ -35,9 +35,9 @@ export default async function SocialPage(props: { params: Promise<{ locale: stri
         </time>
         <hr className="my-4" />
         <div className="grid items-stretch gap-4 md:grid-cols-2">
-          {/*{projects.map((item) => (
+          {projects.map((item) => (
             <SpotlightCard key={item.href} {...item} />
-          ))}*/}
+          ))}
         </div>
       </article>
     </div>

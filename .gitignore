@@ -41,3 +41,4 @@ next-env.d.ts
 
 # velite
 /.velite/
+.ai/mcp/mcp.json

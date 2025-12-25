@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Casablanca from '@/public/casablanca.jpg';
-import ProjectPejobs from '@/public/project-pejobs.png';
 import { ArrowLeft, ArrowRight, MapPin, Pencil } from 'lucide-react';
 
 import { defaultAuthor, siteMetadata } from '@/lib/metadata';
@@ -63,7 +62,7 @@ export const Sidebar = ({ className, locale, ...props }: SidebarProps) => {
           <CardTitle>{t('sidebar.workingon.title')}</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4">
-          {/*{projects.slice(0, siteMetadata.projectsOnHomePage).map((project) => (
+          {projects.slice(0, siteMetadata.projectsOnHomePage).map((project) => (
             <Link
               href={project.href}
               target="_blank"
@@ -86,7 +85,7 @@ export const Sidebar = ({ className, locale, ...props }: SidebarProps) => {
                 </video>
               ) : (
                 <Image
-                  src={ProjectPejobs}
+                  src={project.mediaSrc}
                   alt={project.title}
                   width={56}
                   height={56}
@@ -94,7 +93,7 @@ export const Sidebar = ({ className, locale, ...props }: SidebarProps) => {
                 />
               )}
             </Link>
-          ))}*/}
+          ))}
         </CardContent>
         <Separator />
         <CardFooter>
