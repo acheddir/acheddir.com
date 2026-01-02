@@ -3,6 +3,10 @@
         "title": "The Dev Diary",
         "subtitle": "A personal expedition to the world of software engineering - sharing insights, learned lessons, and technical discoveries"
     },
+    "techradar": {
+        "title": "Check out my Technology Radar",
+        "poweredby": "Powered by"
+    },
     "posts": {
         "seeall": "See all posts"
     },

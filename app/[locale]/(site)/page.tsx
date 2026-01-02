@@ -13,6 +13,7 @@ import { Sidebar } from '@/components/home-sidebar';
 import { Mdx } from '@/components/mdx';
 import NewsletterSubscribe from '@/components/newsletter-subscribe';
 import PostPreview from '@/components/post-preview';
+import { TechnologyRadar } from '@/components/technology-radar';
 import { useTranslation } from '@/app/i18n';
 import i18next from '@/app/i18n/i18next';
 
@@ -44,6 +45,14 @@ export default async function Home(props: { params: Promise<{ locale: string }> 
   return (
     <div className="pb-10">
       <HeroSimple locale={locale} title={th('hero.title')} subtitle={th('hero.subtitle')} />
+      {siteMetadata.technologyRadarUrl && (
+        <TechnologyRadar
+          locale={locale}
+          title={th('techradar.title')}
+          subtitle={th('techradar.poweredby')}
+          url={siteMetadata.technologyRadarUrl}
+        />
+      )}
       <div className="container mt-12 max-w-6xl">
         <div className="grid grid-cols-1 place-items-start justify-between gap-12 lg:grid-cols-3">
           <div className="col-span-1 w-full lg:col-span-2">

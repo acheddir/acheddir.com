@@ -33,6 +33,7 @@ export const siteMetadata: SiteMetaData = {
   siteRepo: 'https://github.com/acheddir',
   newsletterProvider: 'mailerlite',
   newsletterUrl: 'https://developreneur.davidlevai.com',
+  technologyRadarUrl: 'https://radar.thoughtworks.com/?documentId=https%3A%2F%2Fdocs.google.com%2Fspreadsheets%2Fd%2F1K6fCZk1atAtIOgsEOovpeI_9_nSCT43MY_ieAeiP9cM%2Fedit%3Fusp%3Dsharing',
   analyticsProvider: 'umami',
   defaultTheme: 'system',
   activeAnnouncement: false,
