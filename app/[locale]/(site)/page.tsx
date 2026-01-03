@@ -44,7 +44,7 @@ export default async function Home(props: { params: Promise<{ locale: string }> 
 
   return (
     <div className="pb-10">
-      <HeroSimple locale={locale} title={th('hero.title')} subtitle={th('hero.subtitle')} />
+      <HeroSimple locale={locale} title={th('hero.title')} />
       {siteMetadata.technologyRadarUrl && (
         <TechnologyRadar
           locale={locale}
