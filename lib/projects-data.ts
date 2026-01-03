@@ -6,11 +6,11 @@ export const projects = [
     mediaSrc: '/mat-datatable.png',
     mediaType: 'image',
   },
-  {
-    title: 'Recruitly',
-    description: `An ATS micro SaaS for talent acquisition specialists. Built with Angular and .NET`,
-    href: 'https://acheddir.com',
-    mediaSrc: '/',
-    mediaType: 'image',
-  },
+//   {
+//     title: 'Recruitly',
+//     description: `An ATS micro SaaS for talent acquisition specialists. Built with Angular and .NET`,
+//     href: 'https://acheddir.com',
+//     mediaSrc: '/',
+//     mediaType: 'image',
+//   },
 ];
