@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 
 import { cn } from '@/lib/utils';
 import i18next from '@/app/i18n/i18next';

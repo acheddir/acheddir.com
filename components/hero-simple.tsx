@@ -8,6 +8,8 @@ import { defaultAuthor } from '@/lib/metadata';
 import { cn } from '@/lib/utils';
 import i18next from '@/app/i18n/i18next';
 
+import { Typewriter } from '@/components/typewriter';
+
 interface HeroProps {
   locale: string;
   title: string;
@@ -20,7 +22,7 @@ export function HeroSimple({ locale, title, subtitle }: HeroProps) {
   return (
     <div className="container flex max-w-5xl flex-col items-center justify-center text-center sm:py-16 md:py-20">
       <h1 className="mb-2 font-heading text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl">
-        {title}
+        <Typewriter>{title}</Typewriter>
       </h1>
       <h2 className="text-md mb-2 font-heading font-bold leading-tight tracking-tight sm:text-lg md:text-xl">
         {subtitle}
